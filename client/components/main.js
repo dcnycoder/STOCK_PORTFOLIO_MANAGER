@@ -12,8 +12,8 @@ class DisconnectedMain extends Component {
     console.log('this.props.stocks: ', this.props.stocks)
     return (
       <div>
-        <h3>Welcome to the Stock App</h3>
-        <h3>THE STOCK APP</h3>
+        <h3>Welcome to the Stock App?</h3>
+        <h3>THE STOCK APP!</h3>
 
         <ul>
           {this.props.stocks.map(elem => {

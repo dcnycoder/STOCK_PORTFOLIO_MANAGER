@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "start nodemon": "nodemon server/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +20,22 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "chart.js": "^2.8.0",
+    "connect-session-sequelize": "^6.0.0",
+    "d3": "^5.12.0",
+    "d3fc": "^14.0.55",
+    "express": "^4.16.4",
+    "express-session": "^1.15.1",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^2.0.0",
+    "pg": "^7.9.0",
+    "pg-hstore": "^2.3.2",
+    "pondjs": "^0.8.10",
+    "prop-types": "^15.7.2",
+    "react-timeseries-charts": "^0.16.1",
+    "sequelize": "^5.21.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

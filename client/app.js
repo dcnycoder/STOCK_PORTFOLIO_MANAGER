@@ -14,11 +14,11 @@ class App extends Component {
       // <Router history={history}></Router>
       <Router>
         <Switch>
-          <Route path="/" component={Main} />
+
           <Route path="/chart" component={SingleStock} />
           <Route path="/stocks/:ticker" component={SingleStock} />
-
-          {/* <Route path="/" component={Main} /> */}
+          {/* <Route path="/" component={SingleStock} /> */}
+          <Route path="/" component={Main} />
 
 
 

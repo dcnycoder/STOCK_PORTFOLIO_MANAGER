@@ -1,10 +1,17 @@
+//import webpackDevServer from './dev-server';
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const path = require('path')
 const db = require('./db')
-
 const app = express()
+const webpackDevServer = require('../dev-server');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackConfig = require('../webpack.config.js')
+
+//console.log("webpackdevserver: ", webpackDevServer);
+
 
 //all middlewares: logging, static, bodyParser for axios.requests
 app.use(morgan('dev'))
@@ -24,6 +31,16 @@ app.use(bodyParser.urlencoded({extended: true}))
 // app.use('/', (req, res, next) => {
 //   res.sendFile(path.join(__dirname, '../public/index.html'))
 // });
+
+//INCLUDE WEBPACK-DEV-SERVER for development purposes only:
+// if (process.env.NODE_ENV !== 'production') {
+  webpackDevServer(app);
+// }
+
+//this middleware has format of require('webpack-hot-middleware')(compiler) where compiler
+//is the whole webpack.config.js file exported
+app.use(webpackHotMiddleware)(webpackConfig);
+
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public/index.html'))
 })

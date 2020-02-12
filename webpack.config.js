@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
@@ -8,6 +9,14 @@ module.exports = {
     output: {
         path: path.join(__dirname, '/public'),
         filename: 'bundle.js'
+    },
+    devServer: {
+        contentBase: "public",
+        overlay: true,
+        hot: true,
+        stats: {
+            colors: true,
+        }
     },
     module: {
         rules: [
@@ -21,9 +30,11 @@ module.exports = {
         ]
     },
     plugins: [
+
         new HtmlWebpackPlugin({
             template: './src/index.html'
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin(),
     ]
 }
 

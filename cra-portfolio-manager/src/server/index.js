@@ -1,11 +1,10 @@
 const express = require('express')
-
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const path = require('path')
 const db = require('./db')
 
-
+console.log("The node server is attempting to start...")
 const app = express()
 
 //all middlewares: logging, static, bodyParser for axios.requests
@@ -13,22 +12,22 @@ app.use(morgan('dev'))
 
 //FOR HOT RELOADING:
 //prepare webpack compiler to use with webpack dev middleware:
-const webpack = require('webpack') ;
-const webpackConfig = require('../webpack.config.js');
-const compiler = webpack(webpackConfig);
+// const webpack = require('webpack') ;
+// const webpackConfig = require('../webpack.config.js');
+// const compiler = webpack(webpackConfig);
 
 //setup webpack dev middleware:
-const webpackDevMiddleware = require('webpack-dev-middleware')(
-  compiler,
-  webpackConfig.devServer
-)
+// const webpackDevMiddleware = require('webpack-dev-middleware')(
+//   compiler,
+//   webpackConfig.devServer
+// )
 
-app.use(webpackDevMiddleware);
+// app.use(webpackDevMiddleware);
 
 //install webpack-hot-middleware:
-const webpackHotMiddleware = require("webpack-hot-middleware")(compiler);
+// const webpackHotMiddleware = require("webpack-hot-middleware")(compiler);
 
-app.use(webpackHotMiddleware);
+// app.use(webpackHotMiddleware);
 
 //for api routes:
 app.use('/api', require('./api'))
@@ -46,11 +45,13 @@ app.use(bodyParser.urlencoded({extended: true}))
 //   res.sendFile(path.join(__dirname, '../public/index.html'))
 // });
 app.use('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+  //res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+  res.send("You have reached the default api route")
 })
 
 app.use('/stocks/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+  //res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+  res.send("You have reached the stocks api route")
 })
 
 //To handle express server 500 errors

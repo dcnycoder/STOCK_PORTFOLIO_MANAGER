@@ -1,3 +1,4 @@
+
 const router = require('express').Router()
 const axios = require('axios')
 const {Stocks} = require('../db/models/')

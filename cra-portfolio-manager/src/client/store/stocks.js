@@ -18,7 +18,8 @@ export const getStocksThunk = dispatch => {
   return async dispatch => {
     //get all the stocks from db in the form of array
     //and call the whole array from AlphaVantage
-    const {data} = await axios.get('/api/stocks')
+    // const {data} = await axios.get('/api/stocks')
+    const {data} = await axios.get('http://localhost:8080/api/stocks')
     console.log('tickers array: ', data)
     dispatch(getStocks(data))
   }

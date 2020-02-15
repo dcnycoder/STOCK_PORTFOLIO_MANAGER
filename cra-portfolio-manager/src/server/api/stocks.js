@@ -12,24 +12,23 @@ const {alphaVantage} = require('../../keys')
 //GET SINGLE STOCK
 router.get('/:ticker', async (req, res, next) => {
   console.log('single stock api route reached!')
-  console.log('req.params.ticker: ', req.params.ticker)
+  console.log('req.params.ticker: ', req.params.ticker);
   try {
-    const result = await Stocks.findOne({
-      where: {
-        ticker: req.params.ticker
-      }
-    })
-    console.log('router get 1 stock result: ', result)
-    const singleStockPrice = result.data
-    res.send(singleStockPrice)
-  } catch (error) {
-    console.log('Error getting single stock from db:', error)
-    next(error)
+    const result = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${
+      req.params.ticker
+    }&interval=5min&apikey=${alphaVantage}`);
+
+    const singleStockPrices = result.data["Time Series (5min)"]//["Time Series (5min)"];
+    console.dir(`singleStockPrices: ${singleStockPrices["Time Series (5min)"]["2020-02-14 16:00:00"]["1. open"]}`);
+    
+    return singleStockPrices;
+  } catch (err) {
+    console.log("Error getting a single stock info from the Alphavantage API: ", err);
+    next(err);
   }
 })
 
 // router.put('/stocks', (req, res, next) => {
-
 // })
 
 //GETS ALL STOCKS ON THE FRONTPAGE:

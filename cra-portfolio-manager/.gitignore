@@ -26,7 +26,7 @@ yarn-error.log*
 /cra-portfolio-manager/keys.json
 cra-portfolio-manager/src/keys.json
 cra-portfolio-manager/keys.json
-src/keys.json
+/src/keys.json
 keys.json
 
 ../OLD

@@ -8,6 +8,8 @@ const {alphaVantage} = require('../../keys')
 // /PROGRAMMING/Fullstack_Academy/Stackathon/server/api/stocks.js
 // /PROGRAMMING/Fullstack_Academy/Stackathon/keys.json
 
+
+//GET SINGLE STOCK
 router.get('/:ticker', async (req, res, next) => {
   console.log('single stock api route reached!')
   console.log('req.params.ticker: ', req.params.ticker)

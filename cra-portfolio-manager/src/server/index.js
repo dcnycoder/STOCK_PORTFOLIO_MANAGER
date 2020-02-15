@@ -44,14 +44,16 @@ app.use(bodyParser.urlencoded({extended: true}))
 // app.use('/', (req, res, next) => {
 //   res.sendFile(path.join(__dirname, '../public/index.html'))
 // });
+
+
+// app.use('/stocks/', (req, res) => {
+//   //res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+//   res.send("You have reached the stocks api route")
+// })
+
 app.use('/', (req, res) => {
   //res.sendFile(path.join(__dirname, '..', 'public/index.html'))
   res.send("You have reached the default api route")
-})
-
-app.use('/stocks/', (req, res) => {
-  //res.sendFile(path.join(__dirname, '..', 'public/index.html'))
-  res.send("You have reached the stocks api route")
 })
 
 //To handle express server 500 errors
@@ -74,7 +76,7 @@ app.use((req, res, next) => {
 })
 
 db.sync().then(() => {
-  app.listen(8080, () => {
-    console.log('Listening on port 8080!')
+  app.listen(5000, () => {
+    console.log('Listening on port 5000!')
   })
 })

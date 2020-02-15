@@ -13,7 +13,7 @@ class DisconnectedMain extends Component {
     return (
       <div>
         <h3>Welcome to the Stock App</h3>
-        <h3>THE STOCK APP!</h3>
+        <h3>THE STOCK APP</h3>
 
         <ul>
           {this.props.stocks.map(elem => {

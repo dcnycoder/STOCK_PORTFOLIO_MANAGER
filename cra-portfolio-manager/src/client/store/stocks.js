@@ -18,8 +18,8 @@ export const getStocksThunk = dispatch => {
   return async dispatch => {
     //get all the stocks from db in the form of array
     //and call the whole array from AlphaVantage
-    // const {data} = await axios.get('/api/stocks')
-    const {data} = await axios.get('http://localhost:8080/api/stocks')
+    const {data} = await axios.get('/api/stocks')
+    // const {data} = await axios.get('http://localhost:8080/api/stocks')
     console.log('tickers array: ', data)
     dispatch(getStocks(data))
   }
@@ -40,7 +40,7 @@ export const getStockThunk = ticker => {
   return async dispatch => {
     try {
       console.log('ticker: ', ticker)
-      const result = await axios.get(`api/stocks/${ticker}`)
+      const result = await axios.get(`/api/stocks/${ticker}`)
       console.log('result in getStockThunk: ', result)
       //console.log('data in getStockThunk: ', data)
       dispatch(getStock(ticker, result))

@@ -18,10 +18,11 @@ router.get('/:ticker', async (req, res, next) => {
       req.params.ticker
     }&interval=5min&apikey=${alphaVantage}`);
 
-    const singleStockPrices = result.data["Time Series (5min)"]//["Time Series (5min)"];
-    console.dir(`singleStockPrices: ${singleStockPrices["Time Series (5min)"]["2020-02-14 16:00:00"]["1. open"]}`);
-    
-    return singleStockPrices;
+    const singleStockPrices = result.data;//["Time Series (5min)"];
+    //console.dir(`singleStockPrices: ${singleStockPrices["Time Series (5min)"]["2020-02-14 16:00:00"]["1. open"]}`);
+
+    //return singleStockPrices;
+    res.send(singleStockPrices);
   } catch (err) {
     console.log("Error getting a single stock info from the Alphavantage API: ", err);
     next(err);
@@ -53,7 +54,8 @@ router.get('/', async function(req, res, next) {
         }&interval=5min&apikey=${alphaVantage}`
       )
       //console.log("result: ", result)
-      return result
+      return result;
+      //res.send(result);
     })
 
     //let stockPrices = await stockPromises[0];

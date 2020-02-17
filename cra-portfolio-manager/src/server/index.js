@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const path = require('path')
 const db = require('./db')
 
-console.log("The node server is attempting to start...")
+console.log("The node server is starting...")
 const app = express()
 
 //all middlewares: logging, static, bodyParser for axios.requests

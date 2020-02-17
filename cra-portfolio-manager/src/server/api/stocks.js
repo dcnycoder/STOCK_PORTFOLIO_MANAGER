@@ -22,6 +22,7 @@ router.get('/:ticker', async (req, res, next) => {
     //console.dir(`singleStockPrices: ${singleStockPrices["Time Series (5min)"]["2020-02-14 16:00:00"]["1. open"]}`);
 
     //return singleStockPrices;
+    console.log("singleStockPrices: ", singleStockPrices)
     res.send(singleStockPrices);
   } catch (err) {
     console.log("Error getting a single stock info from the Alphavantage API: ", err);

@@ -41,9 +41,9 @@ export const getStockThunk = ticker => {
     try {
       console.log('ticker: ', ticker)
       const result = await axios.get(`/api/stocks/${ticker}`)
-      console.log('result in getStockThunk: ', result)
+      console.log('result.data in getStockThunk: ', result.data)
       //console.log('data in getStockThunk: ', data)
-      dispatch(getStock(ticker, result))
+      dispatch(getStock(ticker, result.data))
     } catch (error) {
       console.log('error in getStockThunk!')
     }

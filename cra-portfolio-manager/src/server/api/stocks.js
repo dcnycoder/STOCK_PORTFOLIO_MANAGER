@@ -2,7 +2,11 @@
 const router = require('express').Router()
 const axios = require('axios')
 const {Stocks} = require('../db/models/')
+//const keys = require('../../keys.json');
 const {alphaVantage} = require('../../keys')
+
+// /PROGRAMMING/Fullstack_Academy/Stackathon/server/api/stocks.js
+// /PROGRAMMING/Fullstack_Academy/Stackathon/keys.json
 
 
 //GET SINGLE STOCK
@@ -50,15 +54,13 @@ router.get('/', async function(req, res, next) {
           stock.ticker
         }&interval=5min&apikey=${alphaVantage}`
       )
-      //console.log("result in axios get all stocks: ", result)
-      return result.data;
+      //console.log("result: ", result)
+      return result;
       //res.send(result);
     })
 
     //let stockPrices = await stockPromises[0];
-    let stockPrices = await Promise.all(stockPromises);
-    console.log("resolved promises in get all stocks: ", stockPrices);
-
+    let stockPrices = await Promise.all(stockPromises)
     // Stockprices is an array of resolved promise resuls, everyone of which has it's own data property.
     //console.log("stockPrices[0].data Sample: ", stockPrices[0].data)
 

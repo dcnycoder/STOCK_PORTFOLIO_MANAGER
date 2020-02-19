@@ -1,6 +1,7 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {getStockThunk} from '../store'
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {getStockThunk} from '../store';
+import Chart from './chart';
 
 class DisconnectedSingleStock extends Component {
   // ComponentDidMount() {
@@ -15,10 +16,8 @@ class DisconnectedSingleStock extends Component {
     return (
       <div>
         <h2>Single Stock Page: </h2>
+        <Chart />
         {/* <canvas>Canvas</canvas> */}
-        <svg width="600" height="600" fill="gray">
-          <rect x="0" y="0" width="40" height="40" />
-        </svg>
       </div>
       // <div id="chart" style="width: 100%; height: 250px"></div>
     )

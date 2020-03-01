@@ -14,10 +14,11 @@ class DisconnectedSingleStock extends Component {
   render() {
     console.log('singleStock this.props: ', this.props.match.params.ticker)
     return (
-      <div>
+      <div id="singleStock">
         <h2>Single Stock Page: </h2>
-        <Chart />
-        {/* <canvas>Canvas</canvas> */}
+        <div id="chart">
+          <Chart />
+        </div>
       </div>
       // <div id="chart" style="width: 100%; height: 250px"></div>
     )
@@ -29,7 +30,7 @@ class DisconnectedSingleStock extends Component {
 const mapStateToProps = state => {
   console.log('state in singleStock mapStateToProps: ', state)
   return {
-    //stocks: state.stocks
+    stocks: state.stocks
   }
 }
 

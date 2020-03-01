@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {getStockThunk} from '../store/';
 import {connect} from 'react-redux'
 const d3 = require('d3');
+const techan = require('techan-js');
 
 //On componentDidMount(), when the svg gets into the DOM we render the chart.
 //We need the state in this component to build the chart.
@@ -9,10 +10,14 @@ const d3 = require('d3');
 //Then we basically wrap the whole d3 building and rendering logic into one buildChart function that gets executed upon componentDidMount()
 class disconnectedChart extends Component {
   componentDidMount() {
-    this.props.getStock()
+    this.props.getStock(this.props.stock)
     this.buildChart()
   }
   buildChart() {
+    //get the data from the state:
+    //stocks[0]['Time Series (5min)']
+    //console.log('this state time series: ', this.state.stocks[0]['Time Series (5min)'])
+
     const width = 600;
     const height = 600;
     const fill = 'green';
@@ -40,6 +45,7 @@ class disconnectedChart extends Component {
     }
     render() {
       return <div id="chart">
+        <h3>The Single Stock Chart is below for {this.props.stock}: </h3>
       </div>
     }
 

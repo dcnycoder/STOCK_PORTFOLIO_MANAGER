@@ -56,7 +56,7 @@ const stockReducer = (state = initialState, action) => {
     case GET_STOCKS:
       return action.stocks
     case GET_STOCK:
-      return [action.data]
+      return action.data
     default:
       return state
   }

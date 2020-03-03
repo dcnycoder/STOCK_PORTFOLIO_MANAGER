@@ -42,12 +42,41 @@ class disconnectedChart extends Component {
     // })
     // IMPORTANT: ROWCONVERTER FUNCTION:
     // let rowConverter = function(d)
-    let dataset = this.props.stocks['Time Series (5 min)'];
-    console.log("dataset: ", dataset);
+    let timeSeries = this.props.stocks['Time Series (5min)'];
 
-    function rowConverter(data) {
-
+    // Convert dataset object into array of objects:
+    let dataset = [];
+    for (let key in timeSeries) {
+      dataset.push(timeSeries[key]);
     }
+    console.log("Dataset in chart.js: ", dataset);
+
+    //STOCKS STRUCTURE EXAMPLE:
+    // stocks: {
+    //   'Meta Data': {
+    //     '1. Information': 'Intraday (5min) open, high, low, close prices and volume',
+    //     '2. Symbol': 'VLO',
+    //     '3. Last Refreshed': '2020-03-02 16:00:00',
+    //     '4. Interval': '5min',
+    //     '5. Output Size': 'Compact',
+    //     '6. Time Zone': 'US/Eastern'
+    //   },
+    //   'Time Series (5min)': {
+    //     '2020-03-02 16:00:00': {
+    //       '1. open': '67.9900',
+    //       '2. high': '68.0600',
+    //       '3. low': '67.7400',
+    //       '4. close': '67.9100',
+    //       '5. volume': '256388'
+    //     },
+    //     '2020-03-02 16:00:00': {
+    //       '1. open': '67.9900',
+    //       '2. high': '68.0600',
+    //       '3. low': '67.7400',
+    //       '4. close': '67.9100',
+    //       '5. volume': '256388'
+    //     },
+
 
       d3.json(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.ticker}&interval=5min&apikey=MUKS5PNHTEUS1KM2`, function (data) {
         console.log("Data in D3.json: ", data)

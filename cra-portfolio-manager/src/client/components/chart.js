@@ -21,11 +21,52 @@ class disconnectedChart extends Component {
   }
 
   buildChart() {
+    console.log("build chart called!")
     //get the data from the state:
-    console.log("this.props.stocks in buildChart: ", this.props.stocks['Time Series (5min)']);
-    if (!this.state) console.log("Wait, still loading...")
-    else console.log("The state has loaded!");
-    console.log('State in buildChart: ', this.state);
+    // console.log("this.props.stocks in buildChart: ", this.props.stocks['Time Series (5min)']);
+    //if (!this.state) console.log("Wait, still loading...")
+    // else console.log("The state has loaded!");
+    // console.log('State in buildChart: ', this.state);
+
+    //GET DATA FROM this.props.stocks:
+    //Maybe a better way to run an explicit Alphavantage API call to get the clean json. Makes data manipulation easier
+    //D3.json returns a promise
+
+    //THEN version of the promise:
+
+
+    // WRAP THE WHOLE D3 logic in d3.json:
+    // D3.JSON FORMAT:
+    // d3.json('url', rowConverter func, (data) => {
+    //   do something with the data obtained;
+    // })
+    // IMPORTANT: ROWCONVERTER FUNCTION:
+    // let rowConverter = function(d)
+    let dataset = this.props.stocks['Time Series (5 min)'];
+    console.log("dataset: ", dataset);
+
+    function rowConverter(data) {
+
+    }
+
+      d3.json(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.ticker}&interval=5min&apikey=MUKS5PNHTEUS1KM2`, function (data) {
+        console.log("Data in D3.json: ", data)
+      });
+
+    //DEFINE SCALES:
+    const xScale = d3.scaleLinear();
+
+
+
+    // async function getDataset(ticker) {
+    //   const dataset = await d3.json(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=MUKS5PNHTEUS1KM2`);
+    //   //{this.props.ticker}
+    //   console.log('dataset: ', Array.isArray(dataset['Time Series (5min)']));
+    // }
+    // getDataset(this.props.ticker);
+
+
+
     const width = 600;
     const height = 600;
     const fill = 'green';

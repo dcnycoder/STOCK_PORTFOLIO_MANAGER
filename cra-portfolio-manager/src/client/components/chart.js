@@ -42,12 +42,17 @@ class disconnectedChart extends Component {
     // })
     // IMPORTANT: ROWCONVERTER FUNCTION:
     // let rowConverter = function(d)
+
+    //GET DATA FROM STATE AND CONVERT IT INTO AN ARRAY:
     let timeSeries = this.props.stocks['Time Series (5min)'];
 
     // Convert dataset object into array of objects:
     let dataset = [];
     for (let key in timeSeries) {
-      dataset.push(timeSeries[key]);
+      dataset.push({
+        time: key,
+        price: timeSeries[key]
+      });
     }
     console.log("Dataset in chart.js: ", dataset);
 
@@ -83,7 +88,10 @@ class disconnectedChart extends Component {
       });
 
     //DEFINE SCALES:
-    const xScale = d3.scaleLinear();
+    // const xScale = d3.scaleLinear()
+    //   .domain([])
+    //   .range()
+
 
 
 

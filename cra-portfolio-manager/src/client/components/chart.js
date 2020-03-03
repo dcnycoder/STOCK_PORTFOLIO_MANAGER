@@ -47,10 +47,15 @@ class disconnectedChart extends Component {
     let timeSeries = this.props.stocks['Time Series (5min)'];
 
     // Convert dataset object into array of objects:
+    // and parse time with d3.timeParse("%y-%m-%d"). This gives D3 the current data template: 2020-03-02 16:00:00, values separated by - and : and how to interpret each value. Sort of like a regular expression. To convert data object back to string format, use D3.timeFormat.
+
+    var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S")
+
     let dataset = [];
     for (let key in timeSeries) {
       dataset.push({
-        time: key,
+        //2020-03-02 16:00:00
+        time: d3.timeParse("%Y-%m-%d %H:%M:%S")(key),
         price: timeSeries[key]
       });
     }
@@ -83,13 +88,13 @@ class disconnectedChart extends Component {
     //     },
 
 
-      d3.json(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.ticker}&interval=5min&apikey=MUKS5PNHTEUS1KM2`, function (data) {
-        console.log("Data in D3.json: ", data)
-      });
+      // d3.json(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.ticker}&interval=5min&apikey=MUKS5PNHTEUS1KM2`, function (data) {
+      //   console.log("Data in D3.json: ", data)
+      // });
 
-    //DEFINE SCALES:
+    // DEFINE SCALES:
     // const xScale = d3.scaleLinear()
-    //   .domain([])
+    //   .domain([d3.min])
     //   .range()
 
 

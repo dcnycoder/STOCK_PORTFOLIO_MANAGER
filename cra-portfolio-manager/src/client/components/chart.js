@@ -21,7 +21,6 @@ class disconnectedChart extends Component {
   }
 
   buildChart() {
-    console.log("build chart called!")
     //get the data from the state:
     // console.log("this.props.stocks in buildChart: ", this.props.stocks['Time Series (5min)']);
     //if (!this.state) console.log("Wait, still loading...")
@@ -46,6 +45,11 @@ class disconnectedChart extends Component {
     //GET DATA FROM STATE AND CONVERT IT INTO AN ARRAY:
     let timeSeries = this.props.stocks['Time Series (5min)'];
 
+    const width = 600;
+    const height = 600;
+    const margin = 30;
+    const fill = 'green';
+
     // Convert dataset object into array of objects:
     // and parse time with d3.timeParse("%y-%m-%d"). This gives D3 the current data template: 2020-03-02 16:00:00, values separated by - and : and how to interpret each value. Sort of like a regular expression. To convert data object back to string format, use D3.timeFormat.
 
@@ -59,7 +63,7 @@ class disconnectedChart extends Component {
         price: timeSeries[key]
       });
     }
-    console.log("Dataset in chart.js: ", dataset);
+    //console.log("Converted Dataset: ", dataset)
 
     //STOCKS STRUCTURE EXAMPLE:
     // stocks: {
@@ -92,11 +96,25 @@ class disconnectedChart extends Component {
       //   console.log("Data in D3.json: ", data)
       // });
 
-    // DEFINE SCALES:
-    // const xScale = d3.scaleLinear()
-    //   .domain([d3.min])
-    //   .range()
+    //DEFINE SCALES:
+    //PROTOTYPE:
+    // .domain([
+    //   d3.min(dataset, accessor function)
+    //   d3.max(dataset, accessor function)
+    // ])
 
+    const xScale = d3.scaleTime()
+      .domain([
+        d3.min(dataset, (d)=>d.time),
+        d3.max(dataset, (d)=>d.time)
+      ])
+      .range(margin, width-margin)
+
+      console.log(`xScale('2020-03-02 16:00:00') ${parseTime('2020-03-02 16:00:00')}`);
+
+    // const yScale = d3.scaleLinear()
+    //   .domain()
+    //   .range()
 
 
 
@@ -108,10 +126,6 @@ class disconnectedChart extends Component {
     // getDataset(this.props.ticker);
 
 
-
-    const width = 600;
-    const height = 600;
-    const fill = 'green';
     //Should select the div with id='chart' provided by the parent singleStock component
     const svg = d3.select('body') //was 'chart'
       .append('svg')

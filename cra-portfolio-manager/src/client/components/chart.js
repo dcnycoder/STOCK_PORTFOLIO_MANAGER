@@ -63,7 +63,7 @@ class disconnectedChart extends Component {
         price: timeSeries[key]
       });
     }
-    //console.log("Converted Dataset: ", dataset)
+    console.log("Converted Dataset: ", dataset)
 
     //STOCKS STRUCTURE EXAMPLE:
     // stocks: {
@@ -96,6 +96,10 @@ class disconnectedChart extends Component {
       //   console.log("Data in D3.json: ", data)
       // });
 
+  // CONVERTED DATASET:
+  // time: Tue Mar 03 2020 16:00:00 GMT-0500 (Eastern Standard Time) {}
+  // price: {1. open: "64.6000", 2. high: "64.9800", 3. low: "64.3900",
+
     //DEFINE SCALES:
     //PROTOTYPE:
     // .domain([
@@ -110,13 +114,23 @@ class disconnectedChart extends Component {
       ])
       .range(margin, width-margin)
 
-      console.log(`xScale('2020-03-02 16:00:00') ${parseTime('2020-03-02 16:00:00')}`);
+    const yScale = d3.scaleLinear()
+      .domain([
+        d3.min(dataset, (d)=>{
+          //console.log(d.price['3. low']);
+          return d.price['3. low'];
+        }),
+        d3.max(dataset, (d)=>{
+          //console.log(d.price['2. high'])
+          return d.price['2. high']
+        })
+      ])
+      .range([0, height-margin]);
 
-    // const yScale = d3.scaleLinear()
-    //   .domain()
-    //   .range()
-
-
+      //WAY TO CHECK THE SCALE .domain and .range properties
+      // console.log(yScale.domain());
+      // console.log(yScale.range());
+      // console.log(`yScale(33) ${yScale(66)}`);
 
     // async function getDataset(ticker) {
     //   const dataset = await d3.json(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=MUKS5PNHTEUS1KM2`);

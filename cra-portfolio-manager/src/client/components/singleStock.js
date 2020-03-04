@@ -13,7 +13,7 @@ class DisconnectedSingleStock extends Component {
     return (
       <div id="singleStock">
         <h2>Single Stock Page: </h2>
-        <div id="chart">
+        <div id="chart" style={{"height" : "300px", "width" : "100%"}} >
           <Chart ticker={this.props.match.params.ticker}/>
         </div>
       </div>

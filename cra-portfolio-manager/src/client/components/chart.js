@@ -191,22 +191,45 @@ class disconnectedChart extends Component {
     // svg
     //   .datum(dataset)
     //   .call(chart)
+//NOTES: d3.Extent SILENTLY FAILS!
 
     const xExtent = fc.extentDate()
-    .accessors([d => d.time]);
+    .accessors([d =>
+    {
+      //console.log('d.time in xExtent: ', d.time)
+      return d.time
+    }]
+    );
   const yExtent = fc.extentLinear()
     .pad([0.1, 0.1])
-    .accessors([d => d.high, d => d.low]);
+    .accessors([d =>
+      {
+        console.log(d.price.high)
+        return d.high
+      }, d =>
+      {
+        console.log(d.price.low);
+        return d.low;
+      }]);
+
+    // console.log('xExtent: ', fc.extentDate().accessors([function(dataset) {
+    //   console.log('dataset.time: ', dataset.time);
+    //   return dataset.time;
+    // }
+    // ]));
+
+    // console.log('yExtent: ', yExtent.accessors());
 
     // The accessorFunc(datum, index) function is called on each item of the data, returning the relevant value for the given accessor.
   const lineSeries = fc
     .seriesSvgLine()
-    .mainValue(d => d.price.high1)
-    .crossValue(d => d.time);
+    .mainValue(dataset => dataset.price.high)
+    .crossValue(dataset => dataset.time);
 
+  //Chart example: https://d3fc.io/introduction/getting-started.html
   const chart = fc
     .chartCartesian(d3.scaleTime(), d3.scaleLinear())
-    .yOrient("right")
+    // .yOrient("right")
     .yDomain(yExtent(dataset))
     .xDomain(xExtent(dataset))
     .svgPlotArea(lineSeries);

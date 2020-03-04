@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {getStockThunk} from '../store/';
 import {connect} from 'react-redux'
 const d3 = require('d3');
-const techan = require('techan-js');
+const fc = require('d3fc');
+//const techan = require('techan-js');
 
 //On componentDidMount(), when the svg gets into the DOM we render the chart.
 //We need the state in this component to build the chart.
@@ -54,13 +55,25 @@ class disconnectedChart extends Component {
     // and parse time with d3.timeParse("%y-%m-%d"). This gives D3 the current data template: 2020-03-02 16:00:00, values separated by - and : and how to interpret each value. Sort of like a regular expression. To convert data object back to string format, use D3.timeFormat.
 
     var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S")
+    // price: {
+    //       '1. open': '67.9900',
+    //       '2. high': '68.0600',
+    //       '3. low': '67.7400',
+    //       '4. close': '67.9100',
+    //       '5. volume': '256388'
+    //     },
 
     let dataset = [];
     for (let key in timeSeries) {
+      //rename key names in the price object:
+      let price = {};
+      for (let key1 in timeSeries[key]) {
+        price[key1.slice(3)] = timeSeries[key][key1];
+      }
       dataset.push({
         //2020-03-02 16:00:00
         time: d3.timeParse("%Y-%m-%d %H:%M:%S")(key),
-        price: timeSeries[key]
+        price: price,
       });
     }
     console.log("Converted Dataset: ", dataset)
@@ -106,6 +119,8 @@ class disconnectedChart extends Component {
     //   d3.min(dataset, accessor function)
     //   d3.max(dataset, accessor function)
     // ])
+    // OR
+    // COULD'VE DONE THE SAME WITH d3.extent(iterable[, accessor]) function, that returns the min and max of the iterable provided to it. D3.extent returns an array of [min, max]
 
     const xScale = d3.scaleTime()
       .domain([
@@ -118,11 +133,11 @@ class disconnectedChart extends Component {
       .domain([
         d3.min(dataset, (d)=>{
           //console.log(d.price['3. low']);
-          return d.price['3. low'];
+          return d.price['low'];
         }),
         d3.max(dataset, (d)=>{
           //console.log(d.price['2. high'])
-          return d.price['2. high']
+          return d.price['high']
         })
       ])
       .range([0, height-margin]);
@@ -141,22 +156,33 @@ class disconnectedChart extends Component {
 
 
     //Should select the div with id='chart' provided by the parent singleStock component
-    const svg = d3.select('body') //was 'chart'
-      .append('svg')
-      .attr("width", width)
-      .attr('height', height)
-      .attr('fill', fill);
+    //OLD D3 WAY:
+    // const svg = d3.select('#chart') //was 'chart'
+    //   .append('svg')
+    //   .attr("width", width)
+    //   .attr('height', height)
+    //   .attr('fill', fill);
 
-    svg.append('rect')
-      .attr('width', 40)
-      .attr('height', 40)
-      .attr('fill', 'yellow')
+    // svg.append('rect')
+    //   .attr('width', 40)
+    //   .attr('height', 40)
+    //   .attr('fill', 'yellow')
 
-    return svg;
-    }
+    // return svg;
+    // }
+
+    // NEW D3FC WAY:
+    //The line series component renders an SVG line, with the mainValue / crossValue properties defining accessors on the underlying data
+
+    //.data(dataset) ?
+    // const lineSeries = fc
+    //   .seriesSvgLine()
+    //   .mainValue(d=>d.high)
+    //   .crossValu(d=>d.date)
+  }// END OF BUILDCHART
     //Create a fork render depending on whether the state is loaded?
     render() {
-      return <div id="chart">
+      return <div>
         <h3>The Single Stock Chart below is for: {this.props.ticker}</h3>
       </div>
     }

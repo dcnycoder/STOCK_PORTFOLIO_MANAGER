@@ -15,14 +15,10 @@ class disconnectedChart extends Component {
   }
   //To make sure that after the getSingleStock thunk is finished and the updated state forces a component re-render, ONLY THEN we run the this.buildChart() so that it has access to the correct stock info.
   componentDidUpdate(prevProps, prevState) {
-    // console.log('Chart previous props: ', prevProps)
-    // console.log('Chart previous state: ', prevState);
-    // console.log("State stocks in compDidUpdate: ", this.props.stocks);
     if (this.props.stocks) this.buildChart();
   }
 
   buildChart() {
-    // console.log('buildChart fired!')
     // //get the data from the state:
     // console.log("this.props.stocks in buildChart: ", this.props.stocks['Time Series (5min)']);
     //if (!this.state) console.log("Wait, still loading...")
@@ -65,19 +61,19 @@ class disconnectedChart extends Component {
     //     },
 
     let dataset = [];
+    //var dataset = fc.randomFinancial()(50);
+    //FORMAT DATASET:
     for (let key in timeSeries) {
-      //rename key names in the price object:
-      let price = {};
+      let object = {}
+      //2020-03-02 16:00:00
+      object.date = d3.timeParse("%Y-%m-%d %H:%M:%S")(key);
+      //rename key names:
       for (let key1 in timeSeries[key]) {
-        price[key1.slice(3)] = Number(timeSeries[key][key1]);
+        object[key1.slice(3)]= Number(timeSeries[key][key1])
       }
-      dataset.push({
-        //2020-03-02 16:00:00
-        time: d3.timeParse("%Y-%m-%d %H:%M:%S")(key),
-        price: price,
-      });
+      dataset.push(object)
     }
-    console.log("Converted Dataset: ", dataset)
+    console.log("Dataset: ", dataset)
 
     //STOCKS STRUCTURE EXAMPLE:
     // stocks: {
@@ -110,10 +106,6 @@ class disconnectedChart extends Component {
       //   console.log("Data in D3.json: ", data)
       // });
 
-  // CONVERTED DATASET:
-  // time: Tue Mar 03 2020 16:00:00 GMT-0500 (Eastern Standard Time) {}
-  // price: {1. open: "64.6000", 2. high: "64.9800", 3. low: "64.3900",
-
     //DEFINE SCALES:
     //PROTOTYPE:
     // .domain([
@@ -121,27 +113,7 @@ class disconnectedChart extends Component {
     //   d3.max(dataset, accessor function)
     // ])
     // OR
-    // COULD'VE DONE THE SAME WITH d3.extent(iterable[, accessor]) function, that returns the min and max of the iterable provided to it. D3.extent returns an array of [min, max]
-
-    const xScale = d3.scaleTime()
-      .domain([
-        d3.min(dataset, (d)=>d.time),
-        d3.max(dataset, (d)=>d.time)
-      ])
-      .range([margin, width-margin])
-
-    const yScale = d3.scaleLinear()
-      .domain([
-        d3.min(dataset, (d)=>{
-          //console.log(d.price['3. low']);
-          return d.price['low'];
-        }),
-        d3.max(dataset, (d)=>{
-          //console.log(d.price['2. high'])
-          return d.price['high']
-        })
-      ])
-      .range([0, height-margin]);
+    // CAN DO THE SAME WITH D3.extent(iterable[, accessor]) function, that returns the min and max of the iterable provided to it. D3.extent returns an array of [min, max]
 
       //WAY TO CHECK THE SCALE .domain and .range properties
       // console.log(yScale.domain());
@@ -192,101 +164,70 @@ class disconnectedChart extends Component {
     // svg
     //   .datum(dataset)
     //   .call(chart)
+
 //NOTES: d3.Extent SILENTLY FAILS!
-  // MY WORK IN PROGRESS:
-  //   const xExtent = fc.extentDate()
-  //   .accessors([d =>
-  //   {
-  //     //console.log('d.time in xExtent: ', d.time)
-  //     return d.time
-  //   }]
-  //   );
-  // const yExtent = fc.extentLinear()
-  //   .pad([0.1, 0.1])
-  //   .accessors([d =>
-  //     {
-  //       console.log(d.price.high)
-  //       return d.high
-  //     }, d =>
-  //     {
-  //       console.log(d.price.low);
-  //       return d.low;
-  //     }]);
+    const xExtent = fc.extentDate()
+    .accessors([d =>
+    {
+      return d.date
+    }]
+    );
+  const yExtent = fc.extentLinear()
+    .pad([0.1, 0.1])
+    .accessors([d =>
+      {
+        return d.high
+      }, d =>
+      {
+        return d.low;
+      }]);
 
-    // console.log('xExtent: ', fc.extentDate(dataset).accessors([function(dataset) {
-    //   console.log('dataset.time: ', dataset.time);
-    //   return dataset.time;
-    // }
-    // ]));
-
-    // console.log('yExtent: ', yExtent.accessors());
 
     // The accessorFunc(datum, index) function is called on each item of the data, returning the relevant value for the given accessor.
 
-    //MY WORK IN PROGRESS
-    // let gridlines = fc.annotationSvgGridline();
-    // let candlestick = fc.seriesSvgCandlestick();
-    // let multi = fc.seriesSvgMulti()
-    //   .series([gridlines, candlestick]);
-
-    // let chart = fc.chartCartesian(
-    //   fc.scaleDiscontinuous(d3.scaleTime()),
-    //   d3.scaleLinear()
-    // )
-    //   .yDomain(yExtent(dataset))
-    //   .xDomain(xExtent(dataset))
-    //   .svgPlotArea(multi);
-
-    // d3.select("#chart")
-    //   .datum(dataset)
-    //   .call(chart);
-
-  // const lineSeries = fc
-  //   .seriesSvgCandlestick()
-  //   .mainValue(dataset => dataset.price.high)
-  //   .crossValue(dataset => dataset.time);
-
-  //Chart example: https://d3fc.io/introduction/getting-started.html
-  // const chart = fc
-  //   .chartCartesian(d3.scaleTime(), d3.scaleLinear())
-  //   .yOrient("right")
-  //   .yDomain(yExtent(dataset))
-  //   .xDomain(xExtent(dataset))
-  //   .svgPlotArea(lineSeries);
-  var data = fc.randomFinancial()(50);
-  console.log('Dummy data: ', data);
-
-  // date: Wed Mar 04 2020 14:28:21 GMT-0500 (Eastern Standard Time) {}
-  //   open: 100
-  //   high: 101.04777137186919
-  //   low: 100
-  //   close: 100.72810686755541
-  //   volume: 990
-
-  var yExtent = fc.extentLinear()
-    .accessors([
-      function(d) { return d.price.high; }, //dummy
-      function(d) { return d.price.low; } //dummy
-    ]);
-
-  var xExtent = fc.extentDate()
-    .accessors([function(d) {
-      //return d.date; //dummy
-      return d.time;
-    }]);
-
-  var gridlines = fc.annotationSvgGridline();
-  var candlestick = fc.seriesSvgCandlestick();
-  var multi = fc.seriesSvgMulti()
+    //Candlestick chart example: https://d3fc.io/introduction/getting-started.html
+    let gridlines = fc.annotationSvgGridline();
+    let candlestick = fc.seriesSvgCandlestick();
+    let multi = fc.seriesSvgMulti()
       .series([gridlines, candlestick]);
 
-  var chart = fc.chartCartesian(
+    let chart = fc.chartCartesian(
       fc.scaleDiscontinuous(d3.scaleTime()),
       d3.scaleLinear()
     )
-    .yDomain(yExtent(dataset))
-    .xDomain(xExtent(dataset))
-    .svgPlotArea(multi);
+      .yDomain(yExtent(dataset))
+      .xDomain(xExtent(dataset))
+      .svgPlotArea(multi);
+
+    console.log("xExtent(dataset): ", xExtent(dataset));
+
+    console.log("yExtent(dataset): ", yExtent(dataset));
+
+  //TEST CARTESIAN CHART:
+//   var gridlines = fc.annotationSvgGridline();
+// // series (from d3fc-series)
+// // n.b. the series are rendered using canvas
+// var line = fc.seriesCanvasLine();
+// // var area = fc.seriesCanvasArea()
+// //   .mainValue(d => d.z);
+
+// // combine into a single series
+// var multi = fc.seriesCanvasMulti()
+//   .series([line]);
+
+// // the Cartesian component, which uses d3fc-element for layout
+// // of the standard features of a chart (axes, labels, plot area)
+// var chart = fc.chartCartesian(
+//     d3.scaleTime(),
+//     d3.scaleLinear()
+//   )
+//   // .xLabel('Value')
+//   // .yLabel('Sine / Cosine')
+//   // .chartLabel('Sine and Cosine')
+//   .yDomain(yExtent(dataset))
+//   .xDomain(xExtent(dataset))
+//   .svgPlotArea(gridlines)
+//   .canvasPlotArea(multi);
 
   d3.select('#chart')
     //.datum(data) //dummy

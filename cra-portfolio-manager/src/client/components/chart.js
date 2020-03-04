@@ -46,8 +46,8 @@ class disconnectedChart extends Component {
     //GET DATA FROM STATE AND CONVERT IT INTO AN ARRAY:
     let timeSeries = this.props.stocks['Time Series (5min)'];
 
-    const width = 600;
-    const height = 600;
+    const width = 1600;
+    const height = 1600;
     const margin = 30;
     const fill = 'green';
 
@@ -127,7 +127,7 @@ class disconnectedChart extends Component {
         d3.min(dataset, (d)=>d.time),
         d3.max(dataset, (d)=>d.time)
       ])
-      .range(margin, width-margin)
+      .range([margin, width-margin])
 
     const yScale = d3.scaleLinear()
       .domain([
@@ -157,11 +157,11 @@ class disconnectedChart extends Component {
 
     //Should select the div with id='chart' provided by the parent singleStock component
     //OLD D3 WAY:
-    // const svg = d3.select('#chart') //was 'chart'
-    //   .append('svg')
-    //   .attr("width", width)
-    //   .attr('height', height)
-    //   .attr('fill', fill);
+    // const svg = d3.select('#chart')
+      // .append('svg')
+      // .attr("width", width)
+      // .attr('height', height)
+      // .attr('fill', fill);
 
     // svg.append('rect')
     //   .attr('width', 40)
@@ -175,19 +175,54 @@ class disconnectedChart extends Component {
     //The line series component renders an SVG line, with the mainValue / crossValue properties defining accessors on the underlying data
 
     //.data(dataset) ?
+    //UNCOMMMENT!
     // const lineSeries = fc
     //   .seriesSvgLine()
     //   .mainValue(d=>d.high)
-    //   .crossValu(d=>d.date)
-  }// END OF BUILDCHART
-    //Create a fork render depending on whether the state is loaded?
+    //   .crossValue(d=>d.date)
+
+    // const chart = fc
+    //   .chartCartesian(xScale, yScale)
+    //   .yOrient("right")
+    //   .yDomain(yScale.domain)
+    //   .xDomain(xScale.domain)
+    //   .svgPlotArea(lineSeries)
+
+    // svg
+    //   .datum(dataset)
+    //   .call(chart)
+
+    const xExtent = fc.extentDate()
+    .accessors([d => d.time]);
+  const yExtent = fc.extentLinear()
+    .pad([0.1, 0.1])
+    .accessors([d => d.high, d => d.low]);
+
+    // The accessorFunc(datum, index) function is called on each item of the data, returning the relevant value for the given accessor.
+  const lineSeries = fc
+    .seriesSvgLine()
+    .mainValue(d => d.price.high1)
+    .crossValue(d => d.time);
+
+  const chart = fc
+    .chartCartesian(d3.scaleTime(), d3.scaleLinear())
+    .yOrient("right")
+    .yDomain(yExtent(dataset))
+    .xDomain(xExtent(dataset))
+    .svgPlotArea(lineSeries);
+
+  d3.select("#chart")
+    .datum(dataset)
+    .call(chart);
+  }// END OF BUILDCHART FUNCTION
+  //   //Create a fork render depending on whether the state is loaded?
     render() {
       return <div>
         <h3>The Single Stock Chart below is for: {this.props.ticker}</h3>
       </div>
     }
 
-}
+} //END OF CHART CLASS COMPONENT
 
 //Both mapStateToProps and mapDispatchToProps return objects
 function mapStateToProps(state) {
